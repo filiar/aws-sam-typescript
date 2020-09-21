@@ -4,9 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "watch": "npx tsc -w",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "npm run lint -- --fix",
-    "zip": "zip -r lambda.zip ./dist/*"
+    "zip": "npm run build && cd ./dist && zip -r lambda.zip .",
+    "build": "npm run clean && npx tsc -p .",
+    "clean": "rm -rf -f dist/*",
+    "postbuild": "mkdir -p dist/node_modules && npm ls --only prod --parseable | tail -n +2 | xargs -I % cp -r % dist/node_modules"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +21,7 @@
     "@typescript-eslint/eslint-plugin": "^4.1.1",
     "@typescript-eslint/parser": "^4.1.1",
     "eslint": "^7.9.0",
+    "eslint-plugin-prettier": "^3.1.4",
     "husky": "^4.3.0",
     "lint-staged": "^10.4.0",
     "nodemon": "^2.0.4",
